@@ -20,17 +20,18 @@ int main() {
 }
 
 int armstrong(unsigned int alg) {
-    int numOp = 0;
+    int pot[10] = {pow(0.0, (double) alg), pow(1.0, (double) alg), pow(2.0, (double) alg), pow(3.0, (double) alg), pow(4.0, (double) alg), 
+        pow(5.0, (double) alg), pow(6.0, (double) alg), pow(7.0, (double) alg), pow(8.0, (double) alg), pow(9.0, (double) alg)};
+    int numOp = 10 * alg;
     int min = pow(10.0, (double) alg - 1.0);
     int max = 10 * min;
     numOp += alg;
     for (int i = min; i < max; i++) {
         int n = 0;
-        for (int j = i; j >= 1; j /= 10) {
-            n += pow((double)(j % 10) , (double) alg);
-            numOp += alg;
-        }
+        for (int j = i; j >= 1; j /= 10)
+            n += pot[j % 10];
         if (n == i)
             fprintf(stdout, "%d\n", n);
     }
+    return numOp;
 }
