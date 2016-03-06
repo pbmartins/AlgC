@@ -14,15 +14,15 @@ int main (void)
     /* declaração dos arrays de teste - usar o pretendido para cada execução */
     /* declaration of the test arrays - use each one for each execution */
 
-    int Array[] = { 1, 3, 5, 7, 9, 11, 20, 25, 27, 29 };
+    /* int Array[] = { 1, 3, 5, 7, 9, 11, 20, 25, 27, 29 }; */
     /* int Array[] = { 1, 3, 6, 9, 11, 13, 20, 25, 27, 29 }; */
     /* int Array[] = { 1, 3, 6, 10, 11, 13, 20, 25, 27, 29 }; */
-    /* int Array[] = { 1, 3, 6, 10, 15, 17, 20, 25, 27, 29 }; */
+    /* int Array[] = { 1, 3, 6, 10, 15, 17, 20, 25, 27, 29 }; */ 
     /* int Array[] = { 1, 3, 6, 10, 15, 21, 22, 25, 27, 29 }; */
     /* int Array[] = { 1, 3, 6, 10, 15, 21, 28, 30, 37, 39 }; */
     /* int Array[] = { 1, 3, 6, 10, 15, 21, 28, 36, 39, 49 }; */
     /* int Array[] = { 1, 3, 6, 10, 15, 21, 28, 36, 45, 49 }; */
-    /* int Array[] = { 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 }; */
+    int Array[] = { 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 };
   
     int NElem = sizeof (Array) / sizeof (int); int Result;
 
@@ -48,13 +48,16 @@ int main (void)
 
 int VerifyDifferences (int array[], int n)
 {
-    int dif = 0; int num;
-    for (int i = 1; i < n; i++) {
-        Count++;
+    if (n < 2)
+        return 0;
+    int dif = array[1] - array[0];
+    Count++;
+    int num;
+    for (int i = 2; i < n; i++) {
+        Count += 2;
         num = array[i] - array[i - 1];
-        if (num <= dif)
+        if (num != ++dif)
             return 0;
-        dif = num; 
     }
     return dif > 0;
 }
