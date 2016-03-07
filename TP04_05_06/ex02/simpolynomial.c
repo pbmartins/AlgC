@@ -16,7 +16,7 @@
 #include "polynomial.h"  /* Ficheiro de interface do tipo de dados */
 
 #define MAX_POLYS 15
-#define MAX_OPTIONS 11
+#define MAX_OPTIONS 12
 
 void Menu (void);
 void ReadOption (int *);

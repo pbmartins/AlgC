@@ -23,10 +23,11 @@
 
 /************ Definição da Estrutura de Dados Interna do POLINOMIO ************/
 
-struct poly
+struct matrix
 {
-  unsigned int Degree;  /* grau do polinómio - polynomial degree */
-  double *Poly;      /* ponteiro para os coeficientes do polinómio - pointer to polynomial's coefficients */
+    unsigned int NL;  /* Numero de linhas */
+    unsigned int NC; /* Numero de colunas */
+    int **Matrix;      /* ponteiro para os coeficientes do polinómio - pointer to polynomial's coefficients */
 };
 
 /*********************** Controlo Centralizado de Erro ************************/
@@ -71,49 +72,68 @@ char *PolyErrorMessage (void)
   else return AbnormalErrorMessage;    /* não há mensagem de erro - no error message */
 }
 
-PtPoly PolyCreate (unsigned int pdegree)
+PtMatrix MatrixCreate (unsigned int pnl, unsigned int pnc)
 {
-    PtPoly Poly;
-    
-    /* There's no need to check if the degree is negativa because it's unsigned int type */
+    PtMatrix newMatrix;
+    unsigned int i, l;
+
+    if (pnl == 0 || pnc == 0) {
+        Error = BAD_SIZE;
+        return NULL;
+    }
 
     /* Alloc memory to struct */
-    if ((Poly = (PtPoly) malloc(sizeof(struct poly))) == NULL) {
+    if ((newMatrix = (PtMatrix) malloc(sizeof(struct matrix))) == NULL) {
         Error = NO_MEM;
         return NULL;
     }
 
-    /* Allocate memory to double array */
-    if ((Poly->Poly = (double *) calloc(pdegree + 1, sizeof(double))) == NULL) {
+    /* Allocate memory to matrix array */
+    if ((newMatrix->Matrix = (int **) calloc(pnl, sizeof(int*))) == NULL) {
         Error = NO_MEM;
         return NULL;
     }
 
-    /* Save degree of polynomial */
-    Poly->Degree = pdegree;
+    for (i = 0; i < pnc; i++) {
+        if ((newMatrix->Matrix[i] = (int *) calloc(pnc, sizeof(int))) == NULL) {
+            for (l = 0; l < i; l++)
+                free(newMatrix->Matrix[l]);
+            free(newMatrix->Matrix);
+            free(newMatrix);
+            Error = NO_MEM;
+            return NULL;
+        } 
+    }
+    
+    /* Save number of columns and lines of matrix */
+    newMatrix->NL = pnl;
+    newMatrix->NC = pnc;
 
     /* Return vector and OK error code */
     Error = OK;
-    return Poly;
+    return newMatrix;
 }
 
-void PolyDestroy (PtPoly *ppoly)
+void MatrixDestroy (PtMatrix *pmatrix)
 {
-    PtPoly tmpPoly = *ppoly;
+    PtMatrix tmpMatrix = *pmatrix;
+    unsigned int i;
 
-    /* Check is polynomial pointer exists */
-    if (tmpPoly == NULL) {
-        Error = NO_POLY;
+    /* Check is matrix pointer exists */
+    if (tmpMatrix == NULL) {
+        Error = NO_MATRIX;
         return ;
     }
 
-    /* Free memory associated with the inside double pointer and the struct */
-    free (tmpPoly->Poly);
-    free (tmpPoly);
+    /* Free memory associated with the int* pointer and the struct */
+    for (i = 0; i < tmpMatrix->NL; i++)
+        free(tmpMatrix->Matrix[i]; 
+    free (tmpMatrix->Matrix);
+    free (tmpMatrix);
 
     /* NULL pointer and OK error message */
     Error = OK;
-    *ppoly = NULL;
+    *pmatrix = NULL;
 }
 
 PtPoly PolyCopy (PtPoly ppoly)
@@ -143,7 +163,7 @@ int PolyDegree (PtPoly ppoly)
     /* Verifies if polynomial exists */
     if (ppoly == NULL) {
         Error = NO_POLY;
-        return -1;
+        return 0;
     }
     
     /* Returns polynomial degree */
@@ -176,13 +196,13 @@ double PolyObserveCoefficient (PtPoly ppoly, unsigned int ppos)
     /* Verifies if polynomial exists */
     if (ppoly == NULL) {
         Error = NO_POLY;
-        return -1.0;
+        return 0.0;
     }
 
     /* Verifies if the index is valid */
     if (ppos > ppoly->Degree) {
         Error = BAD_INDEX;
-        return -1.0;
+        return 0.0;
     }
     
     /* Return the element that was requested */
@@ -197,7 +217,7 @@ int PolyIsNull (PtPoly ppoly)
     /* Verifies if polynomial exists */
     if (ppoly == NULL) {
         Error = NO_POLY;
-        return -1;
+        return 0;
     }
 
     /* Verifies if all coeficients are 0 */
@@ -315,7 +335,7 @@ int PolyEquals (PtPoly ppoly1, PtPoly ppoly2)
 
     /* Check validity of polynomials */    
     if (!ValidPolys(ppoly1, ppoly2))
-        return -1;
+        return 0;
 
     /* Check if they have the same degree */
     if (ppoly1->Degree != ppoly2->Degree)
@@ -326,7 +346,6 @@ int PolyEquals (PtPoly ppoly1, PtPoly ppoly2)
         if (ppoly1->Poly[i] != ppoly2->Poly[i])
             return 0;
 
-    Error = OK;
     return 1;
 }
 
@@ -408,7 +427,7 @@ double PolyEvaluation (PtPoly ppoly, double px)
     /* Verifies if polynomial exists */
     if (ppoly == NULL) {
         Error = NO_POLY;
-        return -1.0;
+        return 0.0;
     }
     
     result = ppoly->Poly[0];
