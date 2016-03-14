@@ -85,6 +85,7 @@ PtPoly PolyCreate (unsigned int pdegree)
 
     /* Allocate memory to double array */
     if ((Poly->Poly = (double *) calloc(pdegree + 1, sizeof(double))) == NULL) {
+        free(Poly);
         Error = NO_MEM;
         return NULL;
     }
