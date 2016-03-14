@@ -7,7 +7,7 @@
  para armazenar os seus NLxNC elementos reais, que vão ser armazenados numa
  sequência bidimensional atribuída dinamicamente.
 
- Nome :                                                     NMec:
+ Nome : Pedro de Bastos Martins                             NMec: 76551
 
  Implementation file of the abstract data type MATRIX (matrix.c). The data
  structure to store the matrix is composed with the integer field NL for keeping
@@ -331,10 +331,6 @@ PtMatrix MatrixMultByScalar (PtMatrix pmat, double pvalue)
 
 double MatrixDeterminant (PtMatrix pmat)
 {
-  /* insira o seu código - insert your code */
-  /* validar se a matriz existe e é quadrada - verify if matrix exist and is square */
-  /* preparar a invocação da função interna - prepare for invoking the internal function */
-  /* libertar a memória dinâmica alocada e devolver o resultado - free the memory and return the result */
     double determinant = 0;
     double* tmpMatrix;
     unsigned int i, j, k;
@@ -347,7 +343,7 @@ double MatrixDeterminant (PtMatrix pmat)
 
     /* Create a temporary unidimensional double pointer array (as if it was the matrix) to use it on Determinant function */
     /* preparar a invocação da função interna - prepare for invoking the internal function */
-    if ((tmpMatrix = (double*) calloc(pmat->NL * pmat->NC, sizeof(double*))) == NULL) {
+    if ((tmpMatrix = (double*) calloc(pmat->NL * pmat->NC, sizeof(double))) == NULL) {
         Error = NO_MEM;
         return -1.0;
     }
