@@ -7,7 +7,7 @@
  de elementos do conjunto, que são caracteres alfabéticos maiúsculos, está
  ordenada por ordem crescente.
 
- Nome :                                                     NMec:
+ Nome : Pedro de Bastos Martins                             NMec: 76551
  
  Implementation file of the abstract data type SET (set.c). The data
  structure to store the set is composed with the integer field Cardinal for 
