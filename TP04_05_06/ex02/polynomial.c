@@ -75,7 +75,7 @@ PtPoly PolyCreate (unsigned int pdegree)
 {
     PtPoly Poly;
     
-    /* There's no need to check if the degree is negativa because it's unsigned int type */
+    /* There's no need to check if the degree is negative because it's unsigned int type */
 
     /* Alloc memory to struct */
     if ((Poly = (PtPoly) malloc(sizeof(struct poly))) == NULL) {
@@ -102,7 +102,7 @@ void PolyDestroy (PtPoly *ppoly)
 {
     PtPoly tmpPoly = *ppoly;
 
-    /* Check is polynomial pointer exists */
+    /* Check if polynomial pointer exists */
     if (tmpPoly == NULL) {
         Error = NO_POLY;
         return ;
@@ -354,15 +354,6 @@ void PolyStoreFile (PtPoly ppoly, char *pnomef)
     for (i = 0; i <= ppoly->Degree; i++)
         fprintf(pfile, "%lf\n", ppoly->Poly[i]);
 
-    /* Version with more detail
-    for (i = ppoly->Degree; i >= 0; i--) {
-        if (ppoly-Poly[i] != 0)
-            fprintf(pfile, "%lf * x^%u", ppoly->Poly[i], i);
-        if ((i > 1) || ((i == 1) && (ppoly->Poly[0] != 0))
-            fprintf(pfile, " + ");
-    }
-    fprintf(pfile, "\n");
-    */
     Error = OK;
     fclose(pfile);    
 }
@@ -381,11 +372,6 @@ PtPoly PolyCreateFile (char *pnomef)
 
     /* Read polynomial degree */
     fscanf(pfile, "%u", &degree);
-    printf("degree = %u\n", degree);
-    if (degree < 0) {
-        Error = BAD_DEGREE;
-        return NULL;
-    }
     
     /* Create new polynomial */
     if ((newPoly = PolyCreate(degree)) == NULL) {
