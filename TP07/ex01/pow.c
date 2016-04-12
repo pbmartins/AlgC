@@ -9,7 +9,7 @@ int main(void) {
     double x = 0.5;
     unsigned int n;    
 
-    for (n = 8180; n < 8193; n++) {
+    for (n = 1; n < 17; n++) {
         printf("N = %u\n", n);
         Counter = 0;
         printf("result1 = %f, mult = %u\n", pow_m1(x, n), Counter);
@@ -21,15 +21,15 @@ int main(void) {
 }
 
 double pow_m1(double x, unsigned int n) {
-    if (!n)
-        return 1;
+    if (n == 1)
+        return x;
     Counter++;
     return x * pow_m1(x, n - 1);
 }
 
 double pow_m2 (double x, unsigned int n) {
-    if (!n)
-        return 1;
+    if (n == 1)
+        return x;
 
     double value = pow_m2(x, n>>1);
     Counter++;
