@@ -8,16 +8,19 @@ int p_dynamic(int n);
 int p_efficient(int n);
 
 int main(void) {
-    int n;    
+    int n, result; 
 
     for (n = 0; n <= 12; n++) {
         printf("N = %d\n", n);
         Counter = 0;
-        printf("Recursive = %2d, div = %u\n", p_recursive(n), Counter);
+        result = p_recursive(n);
+        printf("Recursive = %2d, div = %u\n", result, Counter);
         Counter = 0;
-        printf("Dynamic   = %2d, div = %u\n", p_dynamic(n), Counter);
+        result = p_dynamic(n);
+        printf("Dynamic   = %2d, div = %u\n", result, Counter);
         Counter = 0;
-        printf("Efficient = %2d, div = %u\n", p_efficient(n), Counter);
+        result = p_efficient(n);
+        printf("Efficient = %2d, div = %u\n", result, Counter);
     }
 
     return 0;
@@ -34,7 +37,7 @@ int p_recursive(int n) {
 int p_dynamic(int n) {
     if (n <= 1)
         return 0;
-    int to_return, i, floor, ceil, *array = malloc(sizeof(int) * (n + 1));
+    int to_return, i, floor, ceil, *array = (int*)calloc(n + 1, sizeof(int));
     array[0] = array[1] = 0;
 
     for (i = 2; i <= n; i++, Counter += 2) {
@@ -52,7 +55,7 @@ int p_efficient(int n) {
     if (n <= 1)
         return 0;
     int i, floor, ceil, final_f = n / 2, final_c = final_f + (n % 2), to_return;
-    int *array = malloc(sizeof(int) * (final_c + 1));
+    int *array = (int*)calloc(final_c + 1, sizeof(int));
     array[0] = array[1] = 0;
 
     for (i = 2; i <= final_c; i++, Counter += 2) {
