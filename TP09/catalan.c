@@ -2,9 +2,9 @@
 #include <stdlib.h>
 
 static unsigned int Counter;
-int cataclan_recursive(int n);
-int cataclan_dynamic(int n);
-int cataclan_efficient(int n);
+int catalan_recursive(int n);
+int catalan_dynamic(int n);
+int catalan_efficient(int n);
 
 int main(void) {
     int n, result;    
@@ -12,29 +12,29 @@ int main(void) {
     for (n = 0; n <= 12; n++) {
         printf("N = %d\n", n);
         Counter = 0;
-        result = cataclan_recursive(n);
+        result = catalan_recursive(n);
         printf("Recursive = %2d, div = %u\n", result, Counter);
         Counter = 0;
-        result = cataclan_dynamic(n);
+        result = catalan_dynamic(n);
         printf("Dynamic   = %2d, div = %u\n", result, Counter);
         Counter = 0;
-        result = cataclan_efficient(n);
+        result = catalan_efficient(n);
         printf("Efficient = %2d, div = %u\n", result, Counter);
     }
 
     return 0;
 }
 
-int cataclan_recursive(int n) {
+int catalan_recursive(int n) {
     if (!n)
         return 1;
     int i, sum = 0;
     for (i = 0; i < n; i++, Counter++)
-        sum += cataclan_recursive(i) * cataclan_recursive(n - i - 1);
+        sum += catalan_recursive(i) * catalan_recursive(n - i - 1);
     return sum;
 }
 
-int cataclan_dynamic(int n) {
+int catalan_dynamic(int n) {
     if (!n)
         return 1;
     int i, j, *array = (int*)calloc(n + 1, sizeof(int));
@@ -48,7 +48,7 @@ int cataclan_dynamic(int n) {
     return array[n];            
 }
 
-int cataclan_efficient(int n) {
+int catalan_efficient(int n) {
     if (!n)
         return 1;
     int i, j, *array = (int*)calloc(n + 1, sizeof(int));
@@ -57,8 +57,10 @@ int cataclan_efficient(int n) {
     for (i = 1; i <= n; i++) {
         for (j = 0; j < i / 2; j++, Counter++)
             array[i] += (array[j] * array[i - j - 1]) << 1;
-        if (i % 2)
+        if (i % 2) {
             array[i] += array[j] * array[i - j - 1];
+            Counter++;
+        }
     }
 
     return array[n];  
