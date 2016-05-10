@@ -13,13 +13,13 @@ int main(void) {
         printf("N = %d\n", n);
         Counter = 0;
         result = catalan_recursive(n);
-        printf("Recursive = %2d, div = %u\n", result, Counter);
+        printf("Recursive = %6d, div = %u\n", result, Counter);
         Counter = 0;
         result = catalan_dynamic(n);
-        printf("Dynamic   = %2d, div = %u\n", result, Counter);
+        printf("Dynamic   = %6d, div = %u\n", result, Counter);
         Counter = 0;
         result = catalan_efficient(n);
-        printf("Efficient = %2d, div = %u\n", result, Counter);
+        printf("Efficient = %6d, div = %u\n", result, Counter);
     }
 
     return 0;
@@ -40,10 +40,9 @@ int catalan_dynamic(int n) {
     int i, j, *array = (int*)calloc(n + 1, sizeof(int));
     array[0] = 1; 
 
-    for (i = 1; i <= n; i++) {
+    for (i = 1; i <= n; i++)
         for (j = 0; j < i; j++, Counter++)
             array[i] += array[j] * array[i - j - 1];
-    }
 
     return array[n];            
 }
