@@ -104,7 +104,7 @@ unsigned int ABPHeight (PtABPNode proot)
 {
 	unsigned int LeftHeight, RightHeight;
 
-	if (proot == NULL) { Error = ABP_EMPTY; return -1; } /* no externo no nível 0 - external node is level 0*/
+	if (proot == NULL) { Error = ABP_EMPTY; return 0; } /* no externo no nível 0 - external node is level 0*/
 	else
 	{
 		Error = OK;
