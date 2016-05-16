@@ -650,7 +650,7 @@ int ABPEvenOrderSum (PtABPNode proot)
 {
     PtABPNode node = proot;
     PtStack stack;
-    int order = 1, sum = 0;
+    int order = 0, sum = 0;
     
     if (proot == NULL) {
         Error = ABP_EMPTY;
@@ -672,7 +672,7 @@ int ABPEvenOrderSum (PtABPNode proot)
             StackPop(stack, &node);
             if (!StackIsEmpty(stack)) {
                 StackPop(stack, &node);
-                if (!(order++ & 1))
+                if (order++ & 1)
                     sum += node->Elem;
                 node = node->PtRight;
                 StackPush(stack, &node);
