@@ -38,10 +38,10 @@ int main (void)
 			else
 			{
 				printf ("Erro na operacao escolhida - Error on the chosen operation\n");
-				error = 1;
+				error = OK;
 			}
 
-		if (!error)
+		if (error)
 		{
 			printf ("--------------------------------------------------------------------------------------------\n");
 			if (ABPEmpty (abp)) printf ("\nArvore vazia! - Empty tree!\n");

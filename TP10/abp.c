@@ -634,16 +634,31 @@ int ABPMultSum (PtABPNode proot, int pvalue)
 
 int ABPTotalSum (PtABPNode proot)
 {
-    return proot == NULL ? 
-        0 : proot->Elem + ABPTotalSum(proot->PtLeft) + ABPTotalSum(proot->PtRight);
+    int sum = 0;
+
+    if (proot == NULL) {
+        Error = ABP_EMPTY;
+        return 0;
+    }
+
+    sum = proot->Elem + ABPTotalSum(proot->PtLeft) + ABPTotalSum(proot->PtRight);
+    Error = OK;
+    return sum;
 }
 
 unsigned int ABPOddCount (PtABPNode proot)
 {
-    if (proot == NULL)
+    unsigned int sum = 0;
+
+    if (proot == NULL) {
+        Error = ABP_EMPTY;
         return 0;
-    return (proot->Elem & 1) ? 1 + ABPOddCount(proot->PtLeft) + ABPOddCount(proot->PtRight)
-            : ABPOddCount(proot->PtLeft) + ABPOddCount(proot->PtRight);
+    }
+
+    sum = ABPOddCount(proot->PtLeft) + ABPOddCount(proot->PtRight);
+
+    Error = OK;
+    return (proot->Elem & 1) ? 1 + sum : sum;
 }
 
 int ABPEvenOrderSum (PtABPNode proot)

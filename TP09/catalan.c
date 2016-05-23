@@ -43,24 +43,25 @@ int catalan_dynamic(int n) {
     for (i = 1; i <= n; i++)
         for (j = 0; j < i; j++, Counter++)
             array[i] += array[j] * array[i - j - 1];
-
+    free(array);
     return array[n];            
 }
 
 int catalan_efficient(int n) {
     if (!n)
         return 1;
-    int i, j, *array = (int*)calloc(n + 1, sizeof(int));
+    int i, i_max, j, *array = (int*)calloc(n + 1, sizeof(int));
     array[0] = 1; 
 
     for (i = 1; i <= n; i++) {
-        for (j = 0; j < i / 2; j++, Counter++)
+        i_max = i >> 1;
+        for (j = 0; j < i_max; j++, Counter++)
             array[i] += (array[j] * array[i - j - 1]) << 1;
         if (i % 2) {
             array[i] += array[j] * array[i - j - 1];
             Counter++;
         }
     }
-
+    free(array);
     return array[n];  
 }
