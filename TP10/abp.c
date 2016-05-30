@@ -4,6 +4,7 @@
  crescente. Os nos da arvore são compactos e armazenam elementos inteiros.
 
  Autor : António Manuel Adrego da Rocha    Data : Março de 2016
+Aluno: Pedro de Bastos Martins             NMEC : 76551
  
  Algorithms for manipulating a binary search tree sorted by increasing order. The
  tree nodes are compact and store integer elements.
@@ -558,9 +559,10 @@ PtABPNode ABPMaxRep (PtABPNode proot)
         return NULL;
     }
 
-    Error = OK;
     while (proot->PtRight != NULL)
         proot = proot->PtRight;
+
+    Error = OK;
     return proot;
 }
 

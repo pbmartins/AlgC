@@ -5,8 +5,11 @@ CFLAGS = -ansi -Wall
 OBJM = pqueue.o
 HEADERS = pqueue.h
 
-OBJECTS = $(OBJM) testpqueue.o simpqueue.o
-EXES = tpq spq
+OBJD = pqueue_dijkstra.o
+HEADERSD = pqueue_dijkstra.h
+
+OBJECTS = $(OBJM) testpqueue.o simpqueue.o teste1.o teste2.o
+EXES = tpq spq teste1 teste2
 
 all:	$(EXES)
 
@@ -16,7 +19,15 @@ tpq:	testpqueue.o $(OBJM)
 spq:	simpqueue.o $(OBJM)
 	$(CC) $(CFLAGS) simpqueue.o $(OBJM) -o spq
 
+teste1:	teste1.o $(OBJD)
+	$(CC) $(CFLAGS) teste1.o $(OBJD) -o $@
+
+teste2:	teste2.o $(OBJD)
+	$(CC) $(CFLAGS) teste2.o $(OBJD) -o $@
+
 $(OBJM):	$(HEADERS)
+
+$(OBJD):	$(HEADERSD)
 
 clean:
 	rm -f $(OBJECTS) *~

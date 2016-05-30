@@ -20,12 +20,11 @@ struct pqueue  /* definição da Fila com Prioridade */
 PtPQueue PQueueCreate (unsigned int pdim)
 {
     PtPQueue PQueue;
-    unsigned int i, j;
 
     if (!(pdim))
         return NULL;
 
-    if ((PQueue = (PtQueue) malloc (sizeof(struct pqueue))) == NULL)
+    if ((PQueue = (PtPQueue) malloc (sizeof(struct pqueue))) == NULL)
         return NULL;
 
     if ((PQueue->Heap = (VERTEX *) calloc (pdim, sizeof(VERTEX))) == NULL) {
@@ -33,7 +32,7 @@ PtPQueue PQueueCreate (unsigned int pdim)
         return NULL;
     }
 
-    for (i = 0; i < pdim; i++) {
+    /*for (i = 0; i < pdim; i++) {
         if ((PQueue->Heap[i] = (VERTEX) malloc (sizeof(struct VERTEX))) == NULL) {
             for (j = 0; j < i; j++)
                 free(PQueue->Heap[j]);
@@ -43,7 +42,7 @@ PtPQueue PQueueCreate (unsigned int pdim)
 
         PQueue->Heap[i]->Vertex = 0;
         PQueue->Heap[i]->Cost = 0;
-    }
+    }*/
 
     PQueue->HeapSize = pdim;
     PQueue->NumElem = 0;
@@ -55,13 +54,12 @@ PtPQueue PQueueCreate (unsigned int pdim)
 int PQueueDestroy (PtPQueue *ppqueue)
 {
     PtPQueue tmp = *ppqueue;
-    unsigned int i;
 
     if (tmp == NULL)
         return NO_PQUEUE;
 
-    for (i = 0; i < tmp->HeapSize; i++)
-        free(tmp->Heap[i]);
+    /*for (i = 0; i < tmp->HeapSize; i++)
+        free(tmp->Heap[i]);*/
 
     free(tmp->Heap);
     free(tmp);
@@ -82,20 +80,80 @@ int PQueueInsert (PtPQueue ppqueue, VERTEX *pelem)
     if (ppqueue->NumElem == ppqueue->HeapSize)
         return PQUEUE_FULL;
 
-    for (i = ppqueue->NumElem; i > 0 && ppqueue->Heap[(i-1)/2]->Vertex < pelem; i = (i-1)/2) {
+    if (pelem == NULL)
+        return NULL_PTR;
 
+    for (i = ppqueue->NumElem; i > 0 && ppqueue->Heap[(i-1)/2].Cost > pelem->Cost;
+            i = (i-1)/2) {
+        ppqueue->Heap[i] = ppqueue->Heap[(i-1)/2];
     }
 
+    ppqueue->Heap[i] = *pelem;
+    ppqueue->NumElem++;
+    return OK;
 }
 
 
 int PQueueDeleteMin (PtPQueue ppqueue, VERTEX *pelem)
 {
+    unsigned int i, son;
+
+    if (ppqueue == NULL)
+        return NO_PQUEUE;
+
+    if (!ppqueue->NumElem)
+        return PQUEUE_EMPTY;
+
+    if (pelem == NULL)
+        return NULL_PTR;
+
+    *pelem = ppqueue->Heap[0];
+    ppqueue->NumElem--;
+
+    for (i = 0; 2*i+1 <= ppqueue->NumElem; i = son) {
+        son = 2 * i+1;
+
+        if (son < ppqueue->NumElem
+                && ppqueue->Heap[son].Cost > ppqueue->Heap[son + 1].Cost) son++;
+
+        if (ppqueue->Heap[son].Cost < ppqueue->Heap[ppqueue->NumElem].Cost)
+            ppqueue->Heap[i] = ppqueue->Heap[son];
+        else
+            break;
+    }
+
+    ppqueue->Heap[i] = ppqueue->Heap[ppqueue->NumElem];
+    return OK;
 }
 
 
 int PQueueDecrease (PtPQueue ppqueue, VERTEX *pelem)
 {
+    unsigned int i;
+
+    if (ppqueue == NULL)
+        return NO_PQUEUE;
+
+    if (!ppqueue->NumElem)
+        return PQUEUE_EMPTY;
+
+    if (pelem == NULL)
+        return NULL_PTR;
+
+    for (i = 0; i <= ppqueue->NumElem; i++)
+        if (ppqueue->Heap[i].Vertex == pelem->Vertex)
+            break;
+
+    if (i > ppqueue->NumElem)
+        return NO_ELEM;
+
+    for (; i > 0 && ppqueue->Heap[(i-1)/2].Cost > pelem->Cost;
+            i = (i-1)/2) {
+        ppqueue->Heap[i] = ppqueue->Heap[(i-1)/2];
+    }
+
+    ppqueue->Heap[i] = *pelem;
+    return OK;
 }
 
 
