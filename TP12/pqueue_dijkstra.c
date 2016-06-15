@@ -32,18 +32,6 @@ PtPQueue PQueueCreate (unsigned int pdim)
         return NULL;
     }
 
-    /*for (i = 0; i < pdim; i++) {
-        if ((PQueue->Heap[i] = (VERTEX) malloc (sizeof(struct VERTEX))) == NULL) {
-            for (j = 0; j < i; j++)
-                free(PQueue->Heap[j]);
-            free(PQueue->Heap);
-            free(PQueue);
-        }
-
-        PQueue->Heap[i]->Vertex = 0;
-        PQueue->Heap[i]->Cost = 0;
-    }*/
-
     PQueue->HeapSize = pdim;
     PQueue->NumElem = 0;
 
@@ -57,9 +45,6 @@ int PQueueDestroy (PtPQueue *ppqueue)
 
     if (tmp == NULL)
         return NO_PQUEUE;
-
-    /*for (i = 0; i < tmp->HeapSize; i++)
-        free(tmp->Heap[i]);*/
 
     free(tmp->Heap);
     free(tmp);
